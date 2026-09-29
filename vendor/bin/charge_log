@@ -1,0 +1,28 @@
+#!/vendor/bin/sh
+
+if [ -f /data/charge.log ]; then
+	echo "time              capacity       type           online         status         vbus           vbat           ibat           temp           time_to_full   " >> /data/charge.log
+else
+	echo "time              capacity       type           online         status         vbus           vbat           ibat           temp           time_to_full   " > /data/charge.log
+fi
+
+while true
+do
+    system_time=$(date +"%m-%d %H:%M:%S")
+
+    capacity=$(cat /sys/class/power_supply/battery/capacity)
+    ibat=$(cat /sys/class/power_supply/battery/current_now)
+    status=$(cat /sys/class/power_supply/battery/status)
+    temp=$(cat /sys/class/power_supply/battery/temp)
+    time_to_full_now=$(cat /sys/class/power_supply/battery/time_to_full_now)
+    vbat=$(cat /sys/class/power_supply/battery/voltage_now)
+    online=$(cat /sys/class/power_supply/ext_charger_type/online)
+    usb_type=$(cat /sys/class/power_supply/ext_charger_type/usb_type)
+    vbus=$(cat /sys/class/power_supply/ext_charger_type/voltage_now)
+
+    usb_type_extracted=$(echo $usb_type | awk -F'[][]' '{print $2}')
+
+    printf "%-17s %-14s %-14s %-14s %-14s %-14s %-14s %-14s %-14s %-14s\n" "$system_time" "$capacity" "$usb_type_extracted" "$online" "$status" "$vbus" "$vbat" "$ibat" "$temp" "$time_to_full_now" >> /data/charge.log
+
+    sleep 10
+done

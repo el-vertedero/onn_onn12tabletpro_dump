@@ -1,0 +1,2 @@
+on post-fs-data
+    exec_background - system system -- /vendor/bin/charge_log

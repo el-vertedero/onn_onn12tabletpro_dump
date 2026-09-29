@@ -1,0 +1,103 @@
+import /vendor/etc/init/hw/init.mtkgki.rc
+
+# MTK project .rc configure
+
+on init
+    mkdir /mnt/media_rw/usbotg 0700 media_rw media_rw
+    mkdir /storage/usbotg 0700 root root
+
+on post-fs-data
+
+#Camera
+    chmod 0660 /dev/MAINAF
+    chown system camera /dev/MAINAF
+
+    chmod 0660 /dev/MAINAF2
+    chown system camera /dev/MAINAF2
+
+    chmod 0660 /dev/SUBAF
+    chown system camera /dev/SUBAF
+
+    chmod 0660 /dev/GAF001AF
+    chown system camera /dev/GAF001AF
+
+    chmod 0660 /dev/DW9714AF
+    chown system camera /dev/DW9714AF
+
+    chmod 0660 /dev/LC898212AF
+    chown system camera /dev/LC898212AF
+
+    chmod 0660 /dev/BU64745GWZAF
+    chown system camera /dev/BU64745GWZAF
+
+#SMB
+    chown system system /proc/smb/ScreenComm
+    chmod 0660 /proc/smb/ScreenComm
+
+    chmod 0660 /dev/spm
+    chown system system /dev/spm
+
+# WiFi
+    mkdir /data/misc/wifi 0770 wifi wifi
+    mkdir /data/misc/wifi/sockets 0770 wifi wifi
+    mkdir /data/misc/wpa_supplicant 0770 wifi wifi
+    mkdir /data/vendor/wifi 0770 wifi wifi
+    mkdir /data/vendor/wifi/wpa 0770 wifi wifi
+    mkdir /data/vendor/wifi/wpa/sockets 0770 wifi wifi
+    chmod 0660 /data/misc/wifi/p2p_supplicant.conf
+
+on init
+    # Refer to http://source.android.com/devices/tech/storage/index.html
+    # It said, "Starting in Android 4.4, multiple external storage devices are surfaced to developers through
+    #           Context.getExternalFilesDirs(), Context.getExternalCacheDirs(), and Context.getObbDirs().
+    #           External storage devices surfaced through these APIs must be a semi-permanent part of the device (such as an SD card slot in a battery compartment).
+    #           Developers expect data stored in these locations to be available over long periods of time."
+    # Therefore, if the target doesn't support sd hot-plugging (Ex: the SD card slot in a battery compartment), we need to export SECONDARY_STORAGE in 'boot' section
+    #
+    # export SECONDARY_STORAGE /storage/sdcard1
+
+service fuse_usbotg /system/bin/sdcard -u 1023 -g 1023 -w 1023 -d /mnt/media_rw/usbotg /storage/usbotg
+    class late_start
+    disabled
+
+# start mmstat
+on property:sys.boot_completed=1
+    mkdir /sys/kernel/tracing/instances/mmstat 711
+    write /sys/kernel/tracing/instances/mmstat/tracing_on 0
+    write /sys/kernel/tracing/instances/mmstat/buffer_size_kb 16
+    write /sys/kernel/tracing/instances/mmstat/events/mmstat/enable 1
+    write /sys/kernel/tracing/instances/mmstat/tracing_on 1
+    
+#for sar close or open 
+on property:persist.sys.wlan.iwpriv=0
+    exec - root -- /system/bin/iwpriv-t wlan0 driver "set_pwr_ctrl MySAR 0"
+on property:persist.sys.wlan.iwpriv=1
+    exec - root -- /system/bin/iwpriv-t wlan0 driver "set_pwr_ctrl MySAR 1"
+    
+#for FCC countrycode
+on property:persist.sys.wlan.iwpriv=2
+    exec - root -- /system/bin/iwpriv-t wlan0 driver "set_pwr_ctrl MySAR 2"
+on property:persist.sys.wlan.iwpriv=3
+    exec - root -- /system/bin/iwpriv-t wlan0 driver "set_pwr_ctrl MySAR 3"
+on property:persist.sys.wlan.iwpriv=4
+    exec - root -- /system/bin/iwpriv-t wlan0 driver "set_pwr_ctrl MySAR 4"
+on property:persist.sys.wlan.iwpriv=5
+    exec - root -- /system/bin/iwpriv-t wlan0 driver "set_pwr_ctrl MySAR 5"
+on property:persist.sys.wlan.iwpriv=6
+    exec - root -- /system/bin/iwpriv-t wlan0 driver "set_pwr_ctrl MySAR 6"
+on property:persist.sys.wlan.iwpriv=7
+    exec - root -- /system/bin/iwpriv-t wlan0 driver "set_pwr_ctrl MySAR 7"
+
+#for CE countrycode
+on property:persist.sys.wlan.iwpriv=8
+    exec - root -- /system/bin/iwpriv-t wlan0 driver "set_pwr_ctrl MySAR 8"
+on property:persist.sys.wlan.iwpriv=9
+    exec - root -- /system/bin/iwpriv-t wlan0 driver "set_pwr_ctrl MySAR 9"
+on property:persist.sys.wlan.iwpriv=10
+    exec - root -- /system/bin/iwpriv-t wlan0 driver "set_pwr_ctrl MySAR 10"
+on property:persist.sys.wlan.iwpriv=11
+    exec - root -- /system/bin/iwpriv-t wlan0 driver "set_pwr_ctrl MySAR 11"
+on property:persist.sys.wlan.iwpriv=12
+    exec - root -- /system/bin/iwpriv-t wlan0 driver "set_pwr_ctrl MySAR 12"
+on property:persist.sys.wlan.iwpriv=13
+    exec - root -- /system/bin/iwpriv-t wlan0 driver "set_pwr_ctrl MySAR 13"
