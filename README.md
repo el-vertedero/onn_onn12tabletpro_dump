@@ -1,0 +1,14 @@
+# sys_mssi_tc632_64-user 14 UP1A.231005.007 07211341 release-keys
+- manufacturer: boe
+- platform: common
+- codename: onn12TabletPro
+- flavor: mssi-user
+- release: 14
+- id: UP1A.231005.007
+- incremental: 07211341
+- tags: release-keys
+- fingerprint: onn/onn12TabletPro/onn12TabletPro:14/UP1A.231005.007/07211341:user/release-keys
+- is_ab: true
+- brand: onn
+- branch: sys_mssi_tc632_64-user-14-UP1A.231005.007-07211341-release-keys
+- repo: onn_onn12tabletpro_dump

@@ -1,0 +1,10 @@
+product/app/Photos/Photos.apk.zst
+product/app/Maps/Maps.apk.zst
+product/app/Gmail2/Gmail2.apk.zst
+product/app/WebViewGoogle/WebViewGoogle.apk.zst
+product/priv-app/GmsCore/GmsCore.apk.zst
+product/priv-app/Messages/Messages.apk.zst
+vendor/etc/dts/dts-eagle.lic.zst
+vendor/etc/dts/dts-decoder.lic.zst
+system_ext/apex/com.android.vndk.v30.apex.zst
+product/priv-app/Velvet/Velvet.apk.zst
