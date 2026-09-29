@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<config>
+    <!--GoogleKidsSpace integration  -->
+    <!-- Use this if GoogleKidsSpace APK is preloaded -->
+    <feature name="com.google.android.feature.KIDS_HOME_EXPERIENCE" />
+</config>
